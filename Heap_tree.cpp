@@ -1,23 +1,25 @@
 #include<iostream>
 #include<stdexcept>
-#include<type_traits>
+#include<string>
 
+template <typename T>
 struct Node {
   int key_;
-  int value_;
+  T value_;
   Node* left_ = nullptr;
   Node* right_ = nullptr;
 
-  Node(int key, int value) : key_(key), value_(value), left_(nullptr), right_(nullptr) {}
+  Node(int key, T value) : key_(key), value_(value), left_(nullptr), right_(nullptr) {}
 };
 
+template <typename T>
 class HeapTree {
 public:
   HeapTree() : root_(nullptr) {}
 
-  Node* getRoot() { return root_; }
+  Node<T>* getRoot() { return root_; }
 
-  void insert(int key, int value) {
+  void insert(int key, T value) {
     ins(root_, key, value);
   }
 
@@ -35,16 +37,16 @@ public:
   }
 
 private:
-  void ins(Node* node, int key, int value) {
+  void ins(Node<T>* node, int key, T value) {
     if (node == nullptr) {
-      root_ = new Node(key, value);
+      root_ = new Node<T>(key, value);
     }
     else if (key < node->key_) {
-      if (node->left_ == nullptr) node->left_ = new Node(key, value);
+      if (node->left_ == nullptr) node->left_ = new Node<T>(key, value);
       else ins(node->left_, key, value);
     }
     else if (key > node->key_) {
-      if (node->right_ == nullptr) node->right_ = new Node(key, value);
+      if (node->right_ == nullptr) node->right_ = new Node<T>(key, value);
       else ins(node->right_, key, value);
     }
     else if (key = node->key_) {
@@ -52,7 +54,7 @@ private:
     }
   }
 
-  int search_pr(Node* node, int key) {
+  T search_pr(Node<T>* node, int key) {
     if (node == nullptr) {
       throw std::runtime_error("Trying to search data in empty tree!");
     }
@@ -60,31 +62,31 @@ private:
     return ((key < node->key_) ? search_pr(node->left_, key) : search_pr(node->right_, key));
   }
 
-  Node* getMin(Node* node) {
+  Node<T>* getMin(Node<T>* node) {
     if (node == nullptr) throw std::runtime_error("Trying to get minimum key in empty tree!");
     if (node->left_ == nullptr) return node;
     return getMin(node->left_);
   }
 
-  Node* getMax(Node* node) {
+  Node<T>* getMax(Node<T>* node) {
     if (node == nullptr) throw std::runtime_error("Trying to get maximum key in empty tree!");
     if (node->right_ == nullptr) return node;
     return getMax(node->right_);
   }
 
-  Node* delete_pr(Node* node, int key) {
+  Node<T>* delete_pr(Node<T>* node, int key) {
     if (node == nullptr) return nullptr;
     else if (key < node->key_) node->left_ = delete_pr(node->left_, key);
     else if (key > node->key_) node->right_ = delete_pr(node->right_, key);
     else {
       if (node->left_ == nullptr || node->right_ == nullptr) {
-        Node* temp = node;
+        Node<T>* temp = node;
         if (node->left_ == nullptr) node = node->right_;
         else node = node->left_;
         delete temp;
       }
       else {
-        Node* maxInLeft = getMax(node->left_);
+        Node<T>* maxInLeft = getMax(node->left_);
         node->key_ = maxInLeft->key_;
         node->value_ = maxInLeft->value_;
         node->left_ = delete_pr(node->left_, maxInLeft->key_);
@@ -93,25 +95,31 @@ private:
     return node;
   }
 
-  void printTree_pr(Node* node) {
+  void printTree_pr(Node<T>* node) {
     if (node == nullptr) return;
     printTree_pr(node->left_);
     std::cout << node->key_ << "-" << node->value_ << " ";
     printTree_pr(node->right_);
   }
 
-  Node* root_ = nullptr;
+  Node<T>* root_ = nullptr;
 };
 
 int main() {
-  HeapTree tree;
+  HeapTree<int> tree;
   tree.insert(1, 50);
   tree.insert(5, 1000);
   tree.insert(3, 60);
   tree.printTree();
   tree.delete_leaf(1);
   tree.printTree();
-  std::cout << tree.search(5);
+  std::cout << tree.search(5) << std::endl;
+  HeapTree<std::string> str_tree;
+  str_tree.insert(1, "qwerty");
+  str_tree.insert(10, "asdfg");
+  str_tree.insert(7, "zxcv");
+  str_tree.insert(9, "rfv");
+  str_tree.printTree();
 
   return 0;
 }
