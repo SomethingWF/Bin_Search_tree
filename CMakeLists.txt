@@ -8,3 +8,4 @@ project(MyProject)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Heap_tree Heap_tree.cpp)
+add_executable(AVL_tree AVL_tree.cpp)

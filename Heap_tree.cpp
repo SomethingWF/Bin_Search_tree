@@ -27,7 +27,7 @@ public:
     return search_pr(root_, key);
   }
 
-  void delete_leaf(int key) {
+  void remove(int key) {
     root_ = delete_pr(root_, key);
   }
 
@@ -111,7 +111,7 @@ int main() {
   tree.insert(5, 1000);
   tree.insert(3, 60);
   tree.printTree();
-  tree.delete_leaf(1);
+  tree.remove(1);
   tree.printTree();
   std::cout << tree.search(5) << std::endl;
   HeapTree<std::string> str_tree;
