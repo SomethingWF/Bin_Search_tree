@@ -111,6 +111,7 @@ int main() {
   tree.printTree();
   tree.delete_leaf(1);
   tree.printTree();
+  std::cout << tree.search(5);
 
   return 0;
 }
