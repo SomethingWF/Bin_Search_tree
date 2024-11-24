@@ -10,7 +10,7 @@ struct Node
   T value_;
   Node<T>* left_;
   Node<T>* right_;
-  int height_; // height is the longest route from current node to the lowest leaf (non-existing node height is 0, node without children height is 1)
+  int height_; // height is the long of the route from current node to the lowest leaf (non-existing node height is 0, node without children height is 1)
 
   Node (int key, T value) : key_(key), value_(value), left_(nullptr), right_(nullptr), height_(1) {}
 };
