@@ -115,6 +115,12 @@ private:
     return getMin(node->left_);
   }
 
+  Node<T>* getMax(Node<T>* node) {
+    if (node == nullptr) throw std::runtime_error("Trying to get maximum key in empty tree!");
+    if (node->right_ == nullptr) return node;
+    return getMax(node->right_);
+  }
+
   Node<T>* delete_pr(Node<T>* node, int key) {
     if (node == nullptr) return nullptr;
     else if (key < node->key_) node->left_ = delete_pr(node->left_, key);
